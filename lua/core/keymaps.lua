@@ -59,9 +59,8 @@ vim.keymap.set("n", "<leader>ut", vim.cmd.UndotreeToggle)
 
 -- git fugitive
 vim.keymap.set("n", "<leader>gs", ":G<CR>", { desc = "[G]it [S]tatus", silent = true })
-vim.cmd("command! Gc :G commit")
-vim.cmd("command! Gf :G pull")
-vim.cmd("command! Gp :G push")
+vim.keymap.set("n", "<leader>gp", ":G push<CR>", { desc = "[G]it [P]ush", silent = true })
+vim.keymap.set("n", "<leader>gu", ":G pull<CR>", { desc = "[G]it P[U]ll", silent = true })
 
 -- github copilot
 vim.keymap.set("i", "<C-a>", 'copilot#Accept("\\<CR>")', {
