@@ -70,3 +70,16 @@ vim.keymap.set("i", "<C-a>", 'copilot#Accept("\\<CR>")', {
 	silent = true,
 })
 vim.g.copilot_no_tab_map = true
+
+-- LSP Keymaps
+vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "LSP: [R]e[n]ame" })
+vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP: [C]ode [A]ction" })
+vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "LSP: [G]oto [D]efinition" })
+vim.keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", { desc = "LSP: [G]oto [R]eferences" })
+vim.keymap.set("n", "gI", "<cmd>Telescope lsp_implementations<CR>", { desc = "LSP: [G]oto [I]mplementation" })
+vim.keymap.set("n", "<leader>D", vim.lsp.buf.type_definition, { desc = "LSP: Type [D]efinition" })
+vim.keymap.set("n", "<leader>ds", "<cmd>Telescope lsp_document_symbols<CR>", { desc = "LSP: [D]ocument [S]ymbols" })
+vim.keymap.set("n", "<leader>ws", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", { desc = "LSP: [W]orkspace [S]ymbols" })
+vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "LSP: Hover Documentation" })
+vim.keymap.set("n", "<leader>k", vim.lsp.buf.signature_help, { desc = "LSP: Signature Documentation" })
+
