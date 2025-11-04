@@ -15,6 +15,9 @@ opt.number = true -- Print line number
 opt.relativenumber = true -- Relative line numbers
 
 opt.expandtab = true -- Use spaces instead of tabs
+opt.shiftwidth = 2 -- Size of an indent
+opt.softtabstop = 2 -- Number of spaces tabs count for in insert mode
+opt.smartindent = true -- Insert indents automatically
 
 opt.ignorecase = true -- Ignore case
 opt.smartcase = true -- Don't ignore case with capitals
