@@ -23,7 +23,19 @@ return {
     },
     sections = {
       lualine_a = { "mode" },
-      lualine_b = { "branch", "diff", "diagnostics" },
+      lualine_b = {
+        {
+          "branch",
+          fmt = function(str)
+            if #str > 30 then
+              return str:sub(1, 30) .. "..."
+            end
+            return str
+          end,
+        },
+        "diff",
+        "diagnostics",
+      },
       lualine_c = { { "filename", path = 1 } },
       lualine_x = { "encoding", "fileformat", "filetype" },
       lualine_y = { "progress" },
