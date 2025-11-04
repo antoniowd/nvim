@@ -139,7 +139,7 @@ function M.ask(prompt, callback)
 					content = prompt,
 				},
 			},
-			model = "gpt-4o", -- Fixed: was "gpt-5-mini" which doesn't exist
+			model = "gpt-4o",
 			temperature = 0.3,
 			max_tokens = 200,
 		})
