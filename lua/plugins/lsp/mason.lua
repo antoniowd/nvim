@@ -37,6 +37,34 @@ return {
 				})
 				vim.lsp.enable("lua_ls")
 			end,
+
+			-- Custom handler for eslint
+			["eslint"] = function()
+				vim.lsp.config("eslint", {
+					-- Use the file's location as working directory to properly resolve dependencies
+					-- This is critical for pnpm and workspace setups
+					settings = {
+						workingDirectory = { mode = "location" },
+					},
+					-- Smart root directory detection for standalone and monorepo projects
+					root_dir = function(fname)
+						local root_files = {
+							".git",
+							"pnpm-workspace.yaml",
+							"yarn.lock",
+							"package-lock.json",
+							"pnpm-lock.yaml",
+							"package.json",
+							".eslintrc",
+							".eslintrc.js",
+							".eslintrc.json",
+							"eslint.config.js",
+						}
+						return vim.fs.root(fname, root_files) or vim.fn.getcwd()
+					end,
+				})
+				vim.lsp.enable("eslint")
+			end,
 		},
 	},
 	dependencies = {
