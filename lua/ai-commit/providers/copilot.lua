@@ -65,12 +65,14 @@ local function exchange_token(oauth_token, callback)
 			if response.status == 200 then
 				local ok, github_token = pcall(vim.json.decode, response.body)
 				if ok and github_token then
-					-- Ensure cache directory exists
-					vim.fn.mkdir(cache_dir, "p")
-					-- Cache the token
-					local cache_file = Path:new(cache_path)
-					cache_file:write(vim.json.encode(github_token), "w")
-					callback(github_token, nil)
+					-- Ensure cache directory exists (must be done in vim.schedule)
+					vim.schedule(function()
+						vim.fn.mkdir(cache_dir, "p")
+						-- Cache the token
+						local cache_file = Path:new(cache_path)
+						cache_file:write(vim.json.encode(github_token), "w")
+						callback(github_token, nil)
+					end)
 				else
 					callback(nil, "Failed to parse token exchange response: " .. tostring(github_token))
 				end
@@ -146,9 +148,9 @@ function M.ask(prompt, callback)
 			headers = {
 				["Content-Type"] = "application/json",
 				["Authorization"] = "Bearer " .. github_token.token, -- Use Bearer with GitHub token
-				["User-Agent"] = "GitHubCopilotChat/0.26.7",
-				["Editor-Version"] = "Neovim/" .. vim.version().minor,
-				["Editor-Plugin-Version"] = "ai-commit/1.0.0",
+				["Editor-Version"] = "vscode/1.95.0",
+				["Editor-Plugin-Version"] = "copilot-chat/0.22.4",
+				["User-Agent"] = "GitHubCopilotChat/0.22.4",
 			},
 			body = body,
 			callback = function(response)
