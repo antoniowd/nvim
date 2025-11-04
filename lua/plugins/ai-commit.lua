@@ -7,7 +7,7 @@ return {
 		"zbirenbaum/copilot.lua",
 	},
 	opts = {
-		provider = "openai", -- AI provider: "claude", "openai", or "copilot"
+		provider = "copilot", -- AI provider: "claude", "openai", or "copilot"
 		commit_format = "conventional", -- Use conventional commits format (feat:, fix:, etc.)
 		custom_instructions = nil, -- Optional custom prompt instructions
 	},
