@@ -48,7 +48,7 @@ function M.ask(prompt, callback)
 	-- Using the chat completions endpoint
 	local url = "https://api.githubcopilot.com/chat/completions"
 
-	local body = vim.fn.json_encode({
+	local body = vim.json.encode({
 		messages = {
 			{
 				role = "system",
@@ -82,8 +82,8 @@ function M.ask(prompt, callback)
 				return
 			end
 
-			-- Parse the response
-			local ok, parsed = pcall(vim.fn.json_decode, response.body)
+			-- Parse the response using vim.json.decode (safe in async context)
+			local ok, parsed = pcall(vim.json.decode, response.body)
 			if not ok then
 				callback(nil, "Failed to parse Copilot response: " .. tostring(parsed))
 				return

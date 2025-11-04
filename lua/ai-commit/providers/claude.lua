@@ -23,7 +23,7 @@ function M.ask(prompt, callback)
 	-- Claude API endpoint
 	local url = "https://api.anthropic.com/v1/messages"
 
-	local body = vim.fn.json_encode({
+	local body = vim.json.encode({
 		model = "claude-sonnet-4-20250514",
 		max_tokens = 500,
 		messages = {
@@ -49,8 +49,8 @@ function M.ask(prompt, callback)
 				return
 			end
 
-			-- Parse the response
-			local ok, parsed = pcall(vim.fn.json_decode, response.body)
+			-- Parse the response using vim.json.decode (safe in async context)
+			local ok, parsed = pcall(vim.json.decode, response.body)
 			if not ok then
 				callback(nil, "Failed to parse Claude response: " .. tostring(parsed))
 				return

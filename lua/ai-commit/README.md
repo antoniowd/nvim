@@ -14,7 +14,7 @@ Edit `lua/plugins/ai-commit.lua` to configure:
 
 ```lua
 opts = {
-  provider = "claude",  -- or "copilot"
+  provider = "claude",  -- "claude", "openai", or "copilot"
   commit_format = "conventional",
   custom_instructions = nil,
 }
@@ -35,6 +35,21 @@ Uses Anthropic's Claude API directly. Requires an API key.
 3. Add to your shell profile (.zshrc, .bashrc, etc.)
 4. Set `provider = "claude"` in plugin config
 
+### OpenAI (ChatGPT)
+
+Uses OpenAI's ChatGPT API (gpt-4o-mini by default). Requires an API key.
+
+**Setup:**
+1. Get an API key from https://platform.openai.com/api-keys
+2. Set environment variable:
+   ```bash
+   export OPENAI_API_KEY="your-api-key-here"
+   ```
+3. Add to your shell profile (.zshrc, .bashrc, etc.)
+4. Set `provider = "openai"` in plugin config
+
+**Model:** Uses `gpt-4o-mini` by default (cost-effective). You can change the model in `lua/ai-commit/providers/openai.lua` to `gpt-4o` or `gpt-4` if preferred.
+
 ### Copilot
 
 Uses GitHub Copilot API. Requires active Copilot subscription and authentication.
@@ -43,7 +58,7 @@ Uses GitHub Copilot API. Requires active Copilot subscription and authentication
 1. Ensure Copilot is authenticated and working in Neovim
 2. Set `provider = "copilot"` in plugin config
 
-**Note:** Copilot token extraction can be tricky. If you get authentication errors, use Claude instead.
+**Note:** Copilot token extraction can be tricky. If you get authentication errors, use Claude or OpenAI instead.
 
 ## Commit Format
 

@@ -4,8 +4,7 @@ local M = {}
 M.providers = {
   copilot = "ai-commit.providers.copilot",
   claude = "ai-commit.providers.claude",
-  -- Future providers can be added here:
-  -- openai = "ai-commit.providers.openai",
+  openai = "ai-commit.providers.openai",
 }
 
 -- Get the configured provider
