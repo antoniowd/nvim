@@ -34,6 +34,11 @@ opt.updatetime = 200 -- Save swap file and trigger CursorHold
 
 opt.sidescrolloff = 8 -- Columns of context
 
+opt.scrolloff = 8
+
+-- this is for Avante views can only be fully collapsed with the global statusline
+opt.laststatus = 3
+
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })

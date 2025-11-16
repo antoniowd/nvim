@@ -45,7 +45,7 @@ map("n", "Y", "y$")
 map("n", "<C-f>", ":silent !tmux neww tmux-sessionizer<CR>", { silent = true })
 
 -- git fugitive
-map("n", "<leader>gs", ":G<CR>", { desc = "[G]it [S]tatus", silent = true })
+-- map("n", "<leader>gs", ":G<CR>", { desc = "[G]it [S]tatus", silent = true })
 map("n", "<leader>gp", ":G push<CR>", { desc = "[G]it [P]ush", silent = true })
 map("n", "<leader>gu", ":G pull<CR>", { desc = "[G]it P[U]ll", silent = true })
 
