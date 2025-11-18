@@ -21,7 +21,7 @@ map("t", "<C-h>", "<C-\\><C-n><C-w>h", { desc = "Mode to left window", silent = 
 map("t", "<C-l>", "<C-\\><C-n><C-w>l", { desc = "Mode to right window", silent = true })
 
 -- terminal
-map("n", "<leader>t", ":belowright split | :terminal<CR>", { desc = "Open [T]erminal", silent = true })
+-- map("n", "<leader>t", ":belowright split | :terminal<CR>", { desc = "Open [T]erminal", silent = true })
 map("t", "jj", "<C-\\><C-n>", { desc = "Exit insert mode from terminal", silent = true })
 
 -- resize windows
@@ -45,9 +45,9 @@ map("n", "Y", "y$")
 map("n", "<C-f>", ":silent !tmux neww tmux-sessionizer<CR>", { silent = true })
 
 -- git fugitive
--- map("n", "<leader>gs", ":G<CR>", { desc = "[G]it [S]tatus", silent = true })
-map("n", "<leader>gp", ":G push<CR>", { desc = "[G]it [P]ush", silent = true })
-map("n", "<leader>gu", ":G pull<CR>", { desc = "[G]it P[U]ll", silent = true })
+map("n", "<leader>gs", ":G<CR>", { desc = "[G]it [S]tatus", silent = true })
+-- map("n", "<leader>gp", ":G push<CR>", { desc = "[G]it [P]ush", silent = true })
+-- map("n", "<leader>gu", ":G pull<CR>", { desc = "[G]it P[U]ll", silent = true })
 
 -- Diagnostic keymaps
 map("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
