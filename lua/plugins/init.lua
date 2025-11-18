@@ -22,7 +22,6 @@ return {
 				config = {
 					os = {
 						editPreset = "nvim",
-						open = "nvim {{filename}}",
 					},
 				},
 			},
