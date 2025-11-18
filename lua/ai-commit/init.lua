@@ -78,6 +78,12 @@ function M.insert_at_cursor(text)
   -- Get current buffer
   local buf = vim.api.nvim_get_current_buf()
 
+  -- Check if buffer is modifiable, and make it modifiable if needed
+  local was_modifiable = vim.api.nvim_buf_get_option(buf, 'modifiable')
+  if not was_modifiable then
+    vim.api.nvim_buf_set_option(buf, 'modifiable', true)
+  end
+
   -- Insert the first line at cursor position
   local current_line = vim.api.nvim_buf_get_lines(buf, row - 1, row, false)[1]
   local before = current_line:sub(1, col)
@@ -97,6 +103,9 @@ function M.insert_at_cursor(text)
     -- Move cursor to end of inserted text
     vim.api.nvim_win_set_cursor(0, { row + #lines - 1, #lines[#lines] - #after })
   end
+
+  -- Keep buffer modifiable (we want to edit commit messages)
+  -- Don't restore the original state as commit buffers should be editable
 end
 
 return M
