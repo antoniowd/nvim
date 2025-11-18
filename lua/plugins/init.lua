@@ -17,7 +17,15 @@ return {
 		opts = {
 			bigfile = { enabled = true },
 			picker = { enabled = true },
-			lazygit = { enabled = true, configure = true },
+			lazygit = {
+				configure = true,
+				config = {
+					os = {
+						editPreset = "nvim",
+						open = "nvim {{filename}}",
+					},
+				},
+			},
 		},
 		keys = {
 			{
