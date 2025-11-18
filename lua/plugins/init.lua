@@ -17,6 +17,7 @@ return {
 		opts = {
 			bigfile = { enabled = true },
 			picker = { enabled = true },
+			lazygit = { enabled = true, configure = true },
 		},
 		keys = {
 			{
@@ -61,13 +62,13 @@ return {
 				end,
 				desc = "Git Log Line",
 			},
-			{
-				"<leader>gs",
-				function()
-					Snacks.picker.git_status()
-				end,
-				desc = "Git Status",
-			},
+			-- {
+			-- 	"<leader>gs",
+			-- 	function()
+			-- 		Snacks.picker.git_status()
+			-- 	end,
+			-- 	desc = "Git Status",
+			-- },
 			{
 				"<leader>gi",
 				function()
@@ -95,6 +96,21 @@ return {
 					Snacks.picker.gh_pr({ state = "all" })
 				end,
 				desc = "GitHub Pull Requests (all)",
+			},
+			{
+				"<leader>gB",
+				function()
+					Snacks.gitbrowse()
+				end,
+				desc = "Git Browse",
+				mode = { "n", "v" },
+			},
+			{
+				"<leader>gg",
+				function()
+					Snacks.lazygit()
+				end,
+				desc = "Lazygit",
 			},
 			{
 				"<leader>sg",
@@ -138,6 +154,13 @@ return {
 					Snacks.picker.diagnostics_buffer()
 				end,
 				desc = "Buffer Diagnostics",
+			},
+			{
+				"<leader>t",
+				function()
+					Snacks.terminal()
+				end,
+				desc = "Toggle Terminal",
 			},
 		},
 		-- config = function(_, opts)
