@@ -36,7 +36,7 @@ map("n", "<leader>sa", ":wa<CR>", { desc = "[S]ave [A]ll Opened Buffers", silent
 map("n", "<leader>sq", ":wq<CR>", { desc = "[S]ave and [Q]uit", silent = true })
 
 -- Explorer
-map("n", "<leader>p", ":Ex<CR>", { desc = "[E]xplorer", silent = true })
+-- map("n", "<leader>p", ":Ex<CR>", { desc = "[E]xplorer", silent = true })
 
 -- Yank to the end
 map("n", "Y", "y$")

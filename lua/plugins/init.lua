@@ -17,6 +17,8 @@ return {
 		opts = {
 			bigfile = { enabled = true },
 			picker = { enabled = true },
+			explorer = { enabled = true },
+			scratch = { enabled = true },
 			lazygit = {
 				configure = true,
 				config = {
@@ -27,6 +29,13 @@ return {
 			},
 		},
 		keys = {
+			{
+				"<leader>p",
+				function()
+					Snacks.explorer()
+				end,
+				desc = "File Explorer",
+			},
 			{
 				"<leader>bd",
 				function()
@@ -168,6 +177,20 @@ return {
 					Snacks.terminal()
 				end,
 				desc = "Toggle Terminal",
+			},
+			{
+				"<leader>.",
+				function()
+					Snacks.scratch()
+				end,
+				desc = "Toggle Scratch Buffer",
+			},
+			{
+				"<leader>S",
+				function()
+					Snacks.scratch.select()
+				end,
+				desc = "Select Scratch Buffer",
 			},
 		},
 		-- config = function(_, opts)
