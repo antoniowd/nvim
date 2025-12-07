@@ -2,8 +2,7 @@ return {
 	"mason-org/mason-lspconfig.nvim",
 	opts = {
 		ensure_installed = {
-			"ts_ls",
-			"nextls",
+			"vtsls", -- Faster than ts_ls for large TypeScript projects
 			"lua_ls",
 			"tailwindcss",
 			"html",
@@ -15,6 +14,57 @@ return {
 			-- Default handler for all servers
 			function(server_name)
 				vim.lsp.enable(server_name)
+			end,
+
+			-- Optimized vtsls configuration for TypeScript/JavaScript
+			["vtsls"] = function()
+				vim.lsp.config("vtsls", {
+					settings = {
+						typescript = {
+							-- Disable inlay hints for performance (toggle with <leader>uh)
+							inlayHints = {
+								parameterNames = { enabled = "none" },
+								parameterTypes = { enabled = false },
+								variableTypes = { enabled = false },
+								propertyDeclarationTypes = { enabled = false },
+								functionLikeReturnTypes = { enabled = false },
+								enumMemberValues = { enabled = false },
+							},
+							preferences = {
+								importModuleSpecifier = "relative",
+							},
+						},
+						javascript = {
+							inlayHints = {
+								parameterNames = { enabled = "none" },
+								parameterTypes = { enabled = false },
+								variableTypes = { enabled = false },
+								propertyDeclarationTypes = { enabled = false },
+								functionLikeReturnTypes = { enabled = false },
+								enumMemberValues = { enabled = false },
+							},
+						},
+						vtsls = {
+							autoUseWorkspaceTsdk = true,
+							experimental = {
+								completion = {
+									enableServerSideFuzzyMatch = true,
+								},
+							},
+						},
+					},
+					-- Smart root directory for monorepos and single packages
+					root_dir = function(fname)
+						local root_files = {
+							"tsconfig.json",
+							"jsconfig.json",
+							"package.json",
+							".git",
+						}
+						return vim.fs.root(fname, root_files) or vim.fn.getcwd()
+					end,
+				})
+				vim.lsp.enable("vtsls")
 			end,
 
 			-- Custom handler for lua_ls

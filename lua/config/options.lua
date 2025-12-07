@@ -49,3 +49,46 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	group = highlight_group,
 	pattern = "*",
 })
+
+-- [[ Performance Optimizations ]]
+
+-- Syntax/display performance
+opt.synmaxcol = 240 -- Only syntax highlight first 240 columns
+opt.redrawtime = 1500 -- Allow more time for syntax highlighting large files
+
+-- Sign column (prevents layout shift)
+opt.signcolumn = "yes"
+
+-- Cursor line optimization
+opt.cursorline = true
+opt.cursorlineopt = "number" -- Only highlight line number (less redraws)
+
+-- Disable unused providers (faster startup)
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_perl_provider = 0
+
+-- Disable unused built-in plugins (faster startup)
+local disabled_plugins = {
+	"gzip",
+	"tar",
+	"tarPlugin",
+	"zip",
+	"zipPlugin",
+	"getscript",
+	"getscriptPlugin",
+	"vimball",
+	"vimballPlugin",
+	"2html_plugin",
+	"logiPat",
+	"rrhelper",
+	"matchit",
+	"matchparen",
+	"netrw",
+	"netrwPlugin",
+	"netrwSettings",
+	"netrwFileHandlers",
+}
+for _, plugin in ipairs(disabled_plugins) do
+	vim.g["loaded_" .. plugin] = 1
+end

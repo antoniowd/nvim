@@ -32,6 +32,13 @@ return {
     end)
 
     cmp.setup({
+      -- Performance settings
+      performance = {
+        debounce = 100,
+        throttle = 50,
+        fetching_timeout = 200,
+        max_view_entries = 50,
+      },
       snippet = {
         expand = function(args)
           luasnip.lsp_expand(args.body)
@@ -63,23 +70,40 @@ return {
         end, { "i", "s" }),
       }),
       sources = cmp.config.sources({
-        { name = "copilot", group_index = 2 },
-        { name = "nvim_lsp", group_index = 2 },
-        { name = "luasnip", group_index = 2 },
-        { name = "buffer", group_index = 2 },
-        { name = "path", group_index = 2 },
+        { name = "copilot", group_index = 1, max_item_count = 3 },
+        { name = "nvim_lsp", group_index = 1, max_item_count = 20 },
+        { name = "luasnip", group_index = 2, max_item_count = 5 },
+        {
+          name = "buffer",
+          group_index = 2,
+          max_item_count = 5,
+          option = {
+            get_bufnrs = function()
+              return { vim.api.nvim_get_current_buf() }
+            end,
+          },
+        },
+        { name = "path", group_index = 2, max_item_count = 5 },
       }),
       formatting = {
         format = function(entry, vim_item)
+          -- Truncate long completion items
+          local max_width = 50
+          if #vim_item.abbr > max_width then
+            vim_item.abbr = string.sub(vim_item.abbr, 1, max_width - 3) .. "..."
+          end
           vim_item.menu = ({
-            copilot = "[Copilot]",
+            copilot = "[AI]",
             nvim_lsp = "[LSP]",
-            luasnip = "[Snippet]",
-            buffer = "[Buffer]",
+            luasnip = "[Snip]",
+            buffer = "[Buf]",
             path = "[Path]",
           })[entry.source.name]
           return vim_item
         end,
+      },
+      experimental = {
+        ghost_text = false, -- Disable to avoid conflict with Copilot
       },
     })
   end,
