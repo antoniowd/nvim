@@ -40,22 +40,71 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		map("n", "<leader>ca", vim.lsp.buf.code_action, opts)
 
 		opts.desc = "LSP: [G]oto [D]efinition"
-		map("n", "gd", vim.lsp.buf.definition, opts)
+		map("n", "gd", function()
+			-- Custom handler that filters duplicates and uses Snacks picker
+			local params = vim.lsp.util.make_position_params()
+			vim.lsp.buf_request(0, "textDocument/definition", params, function(err, result, ctx, config)
+				if err then
+					vim.notify("Error getting definition: " .. tostring(err), vim.log.levels.ERROR)
+					return
+				end
+
+				if not result or vim.tbl_isempty(result) then
+					vim.notify("No definition found", vim.log.levels.WARN)
+					return
+				end
+
+				-- Normalize result to always be a list
+				local locations = vim.islist(result) and result or { result }
+
+				-- Filter out duplicates based on uri and range
+				local seen = {}
+				local unique_locations = {}
+				for _, location in ipairs(locations) do
+					local key = string.format(
+						"%s:%d:%d",
+						location.uri or location.targetUri,
+						location.range and location.range.start.line or location.targetRange.start.line,
+						location.range and location.range.start.character or location.targetRange.start.character
+					)
+					if not seen[key] then
+						seen[key] = true
+						table.insert(unique_locations, location)
+					end
+				end
+
+				-- If only one unique location, jump directly
+				if #unique_locations == 1 then
+					vim.lsp.util.jump_to_location(unique_locations[1], "utf-8")
+				else
+					-- Use Snacks picker for multiple locations
+					Snacks.picker.lsp_definitions()
+				end
+			end)
+		end, opts)
 
 		opts.desc = "LSP: [G]oto [R]eferences"
-		map("n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
+		map("n", "gr", function()
+			Snacks.picker.lsp_references()
+		end, opts)
 
 		opts.desc = "LSP: [G]oto [I]mplementation"
-		map("n", "gI", "<cmd>Telescope lsp_implementations<CR>", opts)
+		map("n", "gI", function()
+			Snacks.picker.lsp_implementations()
+		end, opts)
 
 		opts.desc = "LSP: Type [D]efinition"
 		map("n", "<leader>D", vim.lsp.buf.type_definition, opts)
 
 		opts.desc = "LSP: [D]ocument [S]ymbols"
-		map("n", "<leader>ds", "<cmd>Telescope lsp_document_symbols<CR>", opts)
+		map("n", "<leader>ds", function()
+			Snacks.picker.lsp_symbols()
+		end, opts)
 
 		opts.desc = "LSP: [W]orkspace [S]ymbols"
-		map("n", "<leader>ws", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", opts)
+		map("n", "<leader>ws", function()
+			Snacks.picker.lsp_workspace_symbols()
+		end, opts)
 
 		opts.desc = "LSP: Hover Documentation"
 		map("n", "K", vim.lsp.buf.hover, opts)
