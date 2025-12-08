@@ -75,7 +75,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 				-- If only one unique location, jump directly
 				if #unique_locations == 1 then
-					vim.lsp.util.jump_to_location(unique_locations[1], "utf-8")
+					local location = unique_locations[1]
+					local uri = location.uri or location.targetUri
+					local range = location.range or location.targetRange
+
+					-- Convert URI to filename and jump to location
+					local filename = vim.uri_to_fname(uri)
+					vim.cmd("edit " .. vim.fn.fnameescape(filename))
+					vim.api.nvim_win_set_cursor(0, { range.start.line + 1, range.start.character })
 				else
 					-- Use Snacks picker for multiple locations
 					Snacks.picker.lsp_definitions()
