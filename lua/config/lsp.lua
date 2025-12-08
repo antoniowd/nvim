@@ -119,4 +119,53 @@ map("n", "<leader>uh", function()
 	vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
 end, { desc = "Toggle Inlay Hints" })
 
+-- Claude Code reference keymaps
+local function get_git_root()
+	local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+	if vim.v.shell_error ~= 0 then
+		return nil
+	end
+	return git_root
+end
+
+local function get_relative_path()
+	local git_root = get_git_root()
+	if not git_root then
+		vim.notify("Not in a git repository", vim.log.levels.WARN)
+		return nil
+	end
+
+	local filepath = vim.fn.expand("%:p")
+	local relative_path = filepath:sub(#git_root + 2) -- +2 to remove trailing slash
+	return relative_path
+end
+
+-- Normal mode: Copy @filepath
+map("n", "<leader>cr", function()
+	local relative_path = get_relative_path()
+	if relative_path then
+		local reference = "@" .. relative_path
+		vim.fn.setreg("+", reference)
+		vim.notify("Copied: " .. reference, vim.log.levels.INFO)
+	end
+end, { desc = "Copy Claude Code reference" })
+
+-- Visual mode: Copy @filepath:start-end
+map("v", "<leader>cr", function()
+	local relative_path = get_relative_path()
+	if relative_path then
+		local start_line = vim.fn.line("v")
+		local end_line = vim.fn.line(".")
+
+		-- Ensure start_line is always less than end_line
+		if start_line > end_line then
+			start_line, end_line = end_line, start_line
+		end
+
+		local reference = string.format("@%s:%d-%d", relative_path, start_line, end_line)
+		vim.fn.setreg("+", reference)
+		vim.notify("Copied: " .. reference, vim.log.levels.INFO)
+	end
+end, { desc = "Copy Claude Code reference with line range" })
+
 
