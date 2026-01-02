@@ -25,13 +25,19 @@ return {
       lualine_a = { "mode" },
       lualine_b = {
         {
-          "branch",
-          fmt = function(str)
-            if #str > 30 then
-              return str:sub(1, 30) .. "..."
+          function()
+            local handle = io.popen("git rev-parse --abbrev-ref HEAD 2>/dev/null")
+            if handle then
+              local branch = handle:read("*a"):gsub("\n", "")
+              handle:close()
+              if #branch > 30 then
+                return branch:sub(1, 30) .. "..."
+              end
+              return branch
             end
-            return str
+            return ""
           end,
+          icon = "",
         },
         "diff",
         "diagnostics",
