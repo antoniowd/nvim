@@ -113,8 +113,64 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			Snacks.picker.lsp_workspace_symbols()
 		end, opts)
 
+		local function hover_with_preferred_client(bufnr)
+			local clients = vim.lsp.get_clients({ bufnr = bufnr, method = "textDocument/hover" })
+			if #clients == 0 then
+				return
+			end
+
+			local preferred = {
+				"vtsls",
+				"tsserver",
+			}
+
+			local ignored = {
+				eslint = true,
+				cspell = true,
+			}
+
+			local chosen
+			for _, name in ipairs(preferred) do
+				for _, client in ipairs(clients) do
+					if client.name == name then
+						chosen = client
+						break
+					end
+				end
+				if chosen then
+					break
+				end
+			end
+
+			if not chosen then
+				for _, client in ipairs(clients) do
+					if not ignored[client.name] then
+						chosen = client
+						break
+					end
+				end
+			end
+
+			chosen = chosen or clients[1]
+
+			local params = vim.lsp.util.make_position_params()
+			chosen.request("textDocument/hover", params, function(err, result, ctx, config)
+				if err then
+					vim.notify("Hover error: " .. tostring(err), vim.log.levels.ERROR)
+					return
+				end
+				if not result then
+					vim.notify("No hover information available", vim.log.levels.WARN)
+					return
+				end
+				vim.lsp.handlers["textDocument/hover"](err, result, ctx, config)
+			end, bufnr)
+		end
+
 		opts.desc = "LSP: Hover Documentation"
-		map("n", "K", vim.lsp.buf.hover, opts)
+		map("n", "K", function()
+			hover_with_preferred_client(ev.buf)
+		end, opts)
 
 		opts.desc = "LSP: Signature Documentation"
 		map("n", "<leader>k", vim.lsp.buf.signature_help, opts)
@@ -174,5 +230,4 @@ map("v", "<leader>cr", function()
 		vim.notify("Copied: " .. reference, vim.log.levels.INFO)
 	end
 end, { desc = "Copy Claude Code reference with line range" })
-
 
