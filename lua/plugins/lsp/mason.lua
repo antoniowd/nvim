@@ -4,6 +4,8 @@ return {
 		ensure_installed = {
 			"vtsls", -- Faster than ts_ls for large TypeScript projects
 			"lua_ls",
+			"basedpyright",
+			"ruff",
 			"tailwindcss",
 			"html",
 			"cssls",
@@ -86,6 +88,51 @@ return {
 					},
 				})
 				vim.lsp.enable("lua_ls")
+			end,
+
+			["basedpyright"] = function()
+				vim.lsp.config("basedpyright", {
+					settings = {
+						basedpyright = {
+							disableOrganizeImports = true,
+							analysis = {
+								typeCheckingMode = "standard",
+								autoSearchPaths = true,
+								useLibraryCodeForTypes = true,
+							},
+						},
+					},
+					root_dir = function(fname)
+						local root_files = {
+							"pyproject.toml",
+							"ruff.toml",
+							"setup.py",
+							"setup.cfg",
+							"requirements.txt",
+							".git",
+						}
+						return vim.fs.root(fname, root_files) or vim.fn.getcwd()
+					end,
+				})
+				vim.lsp.enable("basedpyright")
+			end,
+
+			["ruff"] = function()
+				vim.lsp.config("ruff", {
+					root_dir = function(fname)
+						local root_files = {
+							"pyproject.toml",
+							"ruff.toml",
+							".ruff.toml",
+							"setup.py",
+							"setup.cfg",
+							"requirements.txt",
+							".git",
+						}
+						return vim.fs.root(fname, root_files) or vim.fn.getcwd()
+					end,
+				})
+				vim.lsp.enable("ruff")
 			end,
 
 			-- Custom handler for eslint

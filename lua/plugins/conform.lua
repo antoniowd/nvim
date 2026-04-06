@@ -18,6 +18,7 @@ return {
       typescript = { "prettier" },
       javascriptreact = { "prettier" },
       typescriptreact = { "prettier" },
+      python = { "ruff_organize_imports", "ruff_format" },
       css = { "prettier" },
       html = { "prettier" },
       json = { "prettier" },

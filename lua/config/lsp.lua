@@ -120,6 +120,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			end
 
 			local preferred = {
+				"basedpyright",
 				"vtsls",
 				"tsserver",
 			}
@@ -127,6 +128,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			local ignored = {
 				eslint = true,
 				cspell = true,
+				ruff = true,
 			}
 
 			local chosen
@@ -230,4 +232,3 @@ map("v", "<leader>cr", function()
 		vim.notify("Copied: " .. reference, vim.log.levels.INFO)
 	end
 end, { desc = "Copy Claude Code reference with line range" })
-

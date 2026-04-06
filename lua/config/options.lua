@@ -64,7 +64,11 @@ opt.cursorline = true
 opt.cursorlineopt = "number" -- Only highlight line number (less redraws)
 
 -- Disable unused providers (faster startup)
-vim.g.loaded_python3_provider = 0
+local python3_host_prog = vim.fn.stdpath("data") .. "/python3-provider/bin/python3"
+if vim.fn.executable(python3_host_prog) == 1 then
+	vim.g.python3_host_prog = python3_host_prog
+end
+
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 
