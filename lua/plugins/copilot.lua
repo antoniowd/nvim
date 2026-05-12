@@ -3,6 +3,14 @@ return {
 	event = "InsertEnter", -- Defer loading until first insert
 	cmd = "Copilot", -- Also load on command
 	config = function()
+		local node_command = vim.fn.expand("$HOME") .. "/.local/bin/node-copilot"
+		if vim.fn.executable(node_command) == 0 then
+			node_command = vim.fn.exepath("node")
+		end
+		if node_command == "" then
+			node_command = "node"
+		end
+
 		require("copilot").setup({
 			suggestion = {
 				enabled = true,
@@ -39,7 +47,7 @@ return {
 				cvs = false,
 				["."] = false,
 			},
-			copilot_node_command = vim.fn.expand("$HOME") .. "/.local/bin/node-copilot",
+			copilot_node_command = node_command,
 			server_opts_overrides = {},
 		})
 	end,
