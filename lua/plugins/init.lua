@@ -124,6 +124,11 @@ return {
 			{
 				"<leader>gg",
 				function()
+					if vim.fn.executable("lazygit") == 0 then
+						vim.notify("lazygit is not installed or not in PATH", vim.log.levels.WARN)
+						return
+					end
+
 					Snacks.lazygit()
 				end,
 				desc = "Lazygit",
